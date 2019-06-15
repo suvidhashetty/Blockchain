@@ -56,11 +56,19 @@ class Blockchain{
 }
 
 let creditLoft = new Blockchain();
-console.log("Mining Block 1...");
-creditLoft.addBlock(new Block(1,"10/07/2017", {amount:4}));
+creditLoft.addBlock(new Block(1,"10/07/2017", {name: 'Suvidha Shetty', skills: 'MEAN Stack',amount:4}));
+creditLoft.addBlock(new Block(2,"12/07/2017", {name: 'Gauri Mandlik', skills: 'LAMP Stack',amount:10}));
 
-console.log("Mining Block 2...");
+var MongoClient = require('mongodb').MongoClient;
+var url = "mongodb://localhost:27017/";
 
-creditLoft.addBlock(new Block(2,"12/07/2017", {amount:10}));
+MongoClient.connect(url,{useNewUrlParser: true}, function(err, db) {
+  if (err) throw err;
+  var dbo = db.db("rmg_db");
 
-console.log(JSON.stringify(creditLoft, null, 4));
+  dbo.collection("employees").insertOne(creditLoft, function(err, res) {
+    if (err) throw err;
+    console.log("1 document inserted");
+    db.close();
+  });
+});
